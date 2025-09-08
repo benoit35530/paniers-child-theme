@@ -113,27 +113,16 @@ add_filter('intermediate_image_sizes_advanced', function($new_sizes, $image_meta
     return $new_sizes;
 }, 10, 3);
 
-add_filter('wp_get_nav_menu_items', 'bootscore_child_nav_menu_items', 10, 2);
-function _custom_nav_menu_item($title, $url, $order, $parent = 0) {
-    $item = new stdClass();
-    $item->ID = 1000000 + $order + $parent;
-    $item->db_id = $item->ID;
-    $item->title = $title;
-    $item->url = $url;
-    $item->menu_order = $order;
-    $item->menu_item_parent = $parent;
-    $item->type = '';
-    $item->object = '';
-    $item->object_id = '';
-    $item->classes = array();
-    $item->target = '';
-    $item->attr_title = '';
-    $item->description = '';
-    $item->xfn = '';
-    $item->status = '';
-    $item->type_label = '';
-    return $item;
-}
+add_filter('wp_get_nav_menu_items', function($items, $menu) {
+    if ($menu->slug == 'account') {
+        foreach ($items as $key => $value) {
+            if ($value->title == "Déconnexion") {
+                $value->url = wp_logout_url('/');
+            }
+        }
+    }
+    return $items;
+}, 10, 2);
 
 add_action( 'admin_bar_menu', function( \WP_Admin_Bar $bar )
 {
@@ -154,17 +143,6 @@ add_action( 'admin_bar_menu', function( \WP_Admin_Bar $bar )
         // ),
     ) );
 }, 210);
-
-function bootscore_child_nav_menu_items($items, $menu) {
-    if ($menu->slug == 'account') {
-        foreach ($items as $key => $value) {
-            if ($value->title == "Déconnexion") {
-                $value->url = wp_logout_url('/');
-            }
-        }
-    }
-    return $items;
-}
 
 add_filter('auth_cookie_expiration', function ($expirein, $userid, $rememberme) {
     if ($rememberme) {
