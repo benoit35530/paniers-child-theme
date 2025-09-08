@@ -1,0 +1,48 @@
+/*!
+ * Bootscore custom styles
+ */
+
+// Add your own code here!
+// Because this file is compiled after Bootstrap, you're also able to use Bootstrap mixins for better code.
+// Some examples can be found here: https://bootscore.me/documentation/bootstrap-css-sass
+
+a.navbar-brand {
+	img {
+		height: 90px;
+	}
+}
+
+.large-green-hr {
+    border: 0;
+    height: 5px;
+    background-color: #93c13f;
+    color: #93c13f;
+    width: 300px;
+}
+
+.text-decoration-popup-link {
+    text-decoration: underline dotted
+}
+
+body.login {
+    div#login {
+        h1 {
+            a {
+                background-image: url("../img/logo/login-logo.png");
+                height: 250px;
+                width: 200px;
+                background-size: 200px 280px;
+                background-repeat: no-repeat;
+            }
+        }
+    }
+}
+
+// WP button-primary
+.button-primary {
+    background: #93c13f;
+}
+
+.wp-block-button a:hover {
+	background-color:gray;
+}
