@@ -46,3 +46,19 @@ body.login {
 .wp-block-button a:hover {
 	background-color:gray;
 }
+
+@font-face {
+    font-family: "Chilet";
+    src: url("../font/chilet-webfont.woff2") format("woff2");
+}
+
+header {
+    font-family: "Chilet";
+}
+
+.nav-link {
+  &:hover,
+  &:focus {
+    color: $nav-link-hover-color;
+  }
+}
