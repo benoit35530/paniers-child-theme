@@ -36,6 +36,10 @@ add_action('init', function() {
 
 add_action('after_setup_theme', function() {
 	register_nav_menu( 'account-menu', __( 'Account Menu', 'theme-text-domain' ) );
+    $user = wp_get_current_user();
+    if ($user && $user->has_cap('consommateur') && !$user->has_cap('gestionnaire')) {
+        add_filter( 'show_admin_bar', '__return_false' );
+    }
 });
 
 add_action('bootscore_after_nav_toggler', function() {
@@ -85,17 +89,19 @@ add_action('bootscore_before_masthead_close', function() {
                 <input type="password" name="pwd" id="user_pass" class="form-control" value="" size="20" autocomplete="current-password" spellcheck="false" required="required">
 			</div>
             <div class="mb-3 form-check">
-                <input name="rememberme" type="checkbox" id="rememberme" value="forever" class="form-check-input">
+                <input name="rememberme" type="checkbox" id="rememberme" value="forever" class="form-check-input" checked>
                 <label for="rememberme" class="form-check-label">Se souvenir de moi</label>
             </div>
 			<p class="submit">
 				<input type="submit" name="wp-submit" id="wp-submit" class="btn btn-primary" value="Se connecter">
                 <input type="hidden" name="redirect_to" value="/">
-                <input type="hidden" name="testcookie" value="1">
+				<input type="hidden" name="testcookie" value="1" />
 			</p>
 		</form>
-<p id="nav">
-				<a class="wp-login-register" href="/inscription">Inscription</a> | <a class="wp-login-lost-password" href="/wp-login.php?action=lostpassword">Mot de passe oublié&nbsp;?</a>			</p>    </div>
+        <p id="nav">
+            <a class="wp-login-register" href="/inscription">Inscription</a> | <a class="wp-login-lost-password" href="/wp-login.php?action=lostpassword">Mot de passe oublié&nbsp;?</a>
+        </p>
+    </div>
 </div>
     <?php
     }
@@ -132,15 +138,6 @@ add_action( 'admin_bar_menu', function( \WP_Admin_Bar $bar )
         'group'  => null,
         'title'  => __( 'Administration des Paniers', 'paniers-admin' ),
         'href'   => '/paniers/admin',
-        // 'meta'   => array(
-        //     'target'   => '_self',
-        //     'title'    => __( 'Hello', 'paniers-admin' ),
-        //     'html'     => '<p>Hello</p>',
-        //     'class'    => 'wpse--item',
-        //     'rel'      => 'friend',
-        //     'onclick'  => "alert('Hello');",
-        //     'tabindex' => PHP_INT_MAX,
-        // ),
     ) );
 }, 210);
 
@@ -152,7 +149,6 @@ add_filter('auth_cookie_expiration', function ($expirein, $userid, $rememberme) 
     }
 }, 10, 3);
 
-
 function block_table_class() {
   return "table-bordered table-striped table-hover";
 }
@@ -162,7 +158,6 @@ function block_table_content($block_content, $block) {
     return str_replace("table-responsive", "table-responsive-lg", $block_content);
 }
 add_filter('bootscore/block/table/content', 'block_table_content', 10, 2);
-
 
 // Login page customization
 add_filter('login_headerurl', function () { return home_url(); });
